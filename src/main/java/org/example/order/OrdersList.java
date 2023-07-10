@@ -3,6 +3,7 @@ import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 
 import static io.restassured.RestAssured.given;
+import static org.example.url.ScooterApiEndpoints.*;
 
 public class OrdersList {
 
@@ -10,29 +11,29 @@ public class OrdersList {
     public ValidatableResponse createNewOrder(Order order){
         return given()
                 .header("Content-type", "application/json")
-                .baseUri("http://qa-scooter.praktikum-services.ru/")
+                .baseUri(BASE_URL)
                 .body(order)
                 .when()
-                .post("/api/v1/orders")
+                .post(ORDERS)
                 .then();
     }
 
     @Step("Получить список заказов")
     public ValidatableResponse getOrderList(){
         return given()
-                .baseUri("http://qa-scooter.praktikum-services.ru/")
+                .baseUri(BASE_URL)
                 .when()
-                .get("/api/v1/orders")
+                .get(ORDERS)
                 .then();
     }
     @Step("Отмена заказ")
     public ValidatableResponse cancelOrder(int track){
         return given()
                 .header("Content-type", "application/json")
-                .baseUri("http://qa-scooter.praktikum-services.ru/")
+                .baseUri(BASE_URL)
                 .body(track)
                 .when()
-                .post("/api/v1/orders")
+                .post(CANCEL_ORDER)
                 .then();
     }
 }

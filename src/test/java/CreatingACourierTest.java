@@ -3,6 +3,7 @@ import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.example.courier.Authorization;
@@ -52,13 +53,13 @@ public class CreatingACourierTest {
     @DisplayName("Повторная регистрация УЗ курьера")
     @Description("Повторная регистрация УЗ курьера с теми же данными")
     public void reRegistrationOfCourier(){
-        createBaseCourier = creatingCourier.createCourier(courierData.baseCourier());
+        createBaseCourier = creatingCourier.createCourier(courierData.registeredCourier());
         assertsRegistration.creatingExistingAccount(createBaseCourier);
     }
 
     @After
     public void deleteCourier() {
-        if ((createBaseCourier.extract().statusCode() == 201) || (createBaseCourier.extract().statusCode() == 409)) {
+        if (createBaseCourier.extract().statusCode() == 201) {
             auth = Authorization.fromRegistrationCourier(courierData.baseCourier());
             authBaseCourier = authCourier.authorizationCourier(auth);
             courierId = authBaseCourier.extract().path("id");
